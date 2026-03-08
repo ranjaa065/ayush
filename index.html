@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Women's Day</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+background:linear-gradient(135deg,#fbc2eb,#a6c1ee);
+}
+
+/* smoother floating flowers */
+
+.flower{
+position:absolute;
+font-size:24px;
+will-change: transform;
+animation:flowerFloat linear infinite;
+pointer-events:none;
+}
+
+@keyframes flowerFloat{
+
+0%{
+transform: translate3d(0,120vh,0) rotate(0deg);
+opacity:0;
+}
+
+10%{
+opacity:1;
+}
+
+90%{
+opacity:1;
+}
+
+100%{
+transform: translate3d(0,-20vh,0) rotate(360deg);
+opacity:0;
+}
+
+}
+
+/* women walking */
+
+.woman{
+position:absolute;
+bottom:0;
+font-size:60px;
+animation:walk 12s linear infinite;
+opacity:0.8;
+pointer-events:none;
+}
+
+@keyframes walk{
+0%{left:-10%}
+100%{left:110%}
+}
+
+/* confetti */
+
+.confetti{
+position:absolute;
+width:8px;
+height:8px;
+animation:confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall{
+0%{transform:translateY(-10vh)}
+100%{transform:translateY(100vh) rotate(360deg)}
+}
+
+/* 3D flower garden */
+
+.garden{
+position:absolute;
+top:50%;
+left:50%;
+transform-style:preserve-3d;
+animation:rotateGarden 20s linear infinite;
+}
+
+@keyframes rotateGarden{
+0%{transform:translate(-50%,-50%) rotateY(0deg)}
+100%{transform:translate(-50%,-50%) rotateY(360deg)}
+}
+
+.garden span{
+position:absolute;
+font-size:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+function FloatingFlowers(){
+
+const items=new Array(12).fill("🌸")
+
+return items.map((_,i)=>(
+<div
+key={i}
+className="flower"
+style={{
+left:Math.random()*100+"%",
+animationDuration:(8+Math.random()*6)+"s",
+animationDelay:(Math.random()*8)+"s"
+}}
+>
+🌸
+</div>
+))
+
+}
+
+function Women(){
+
+return(
+<>
+<div className="woman">👩</div>
+<div className="woman" style={{animationDelay:"4s"}}>💃</div>
+<div className="woman" style={{animationDelay:"7s"}}>👩‍🦰</div>
+</>
+)
+
+}
+
+function FlowerGarden(){
+
+const flowers=["🌷","🌹","🌺","🌸","🌼","🌻"]
+
+return(
+
+<div className="garden">
+
+{flowers.map((f,i)=>{
+
+const angle=(360/flowers.length)*i
+const radius=140
+
+return(
+<span
+key={i}
+style={{
+transform:`rotateY(${angle}deg) translateZ(${radius}px)`
+}}
+>
+{f}
+</span>
+)
+
+})}
+
+</div>
+
+)
+
+}
+
+function Confetti({show}){
+
+if(!show) return null
+
+return [...Array(30)].map((_,i)=>(
+<div
+key={i}
+className="confetti"
+style={{
+left:Math.random()*100+"%",
+background:`hsl(${Math.random()*360},100%,50%)`
+}}
+></div>
+))
+
+}
+
+function App(){
+
+const [celebrate,setCelebrate]=React.useState(false)
+
+return(
+
+<div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+
+<div className="absolute inset-0 pointer-events-none">
+
+<FloatingFlowers/>
+<Women/>
+<FlowerGarden/>
+<Confetti show={celebrate}/>
+
+</div>
+
+<div className="relative z-10 bg-white/80 backdrop-blur-lg shadow-2xl rounded-2xl p-6 max-w-md w-full text-center">
+
+<h1 className="text-3xl font-bold text-pink-600 mb-4 animate-pulse">
+Happy Women's Day 💖
+</h1>
+
+<img
+src="indian.jpeg"
+className="w-40 h-40 mx-auto rounded-full object-cover mb-4 border-4 border-pink-400"
+/>
+
+<p className="text-gray-700 text-lg">
+Women represent strength, kindness, intelligence and inspiration to me.
+Today we celebrate the amazing women who make the world better.
+</p>
+
+<button
+onClick={()=>setCelebrate(true)}
+className="mt-6 w-full sm:w-auto px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition transform hover:scale-105"
+>
+Celebrate Women 🌸
+</button>
+
+</div>
+
+</div>
+
+)
+
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>)
+
+</script>
+
+</body>
+</html>
